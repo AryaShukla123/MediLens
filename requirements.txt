@@ -7,7 +7,7 @@ python-multipart==0.0.9      # required for form + file uploads (e.g. eye image 
 # --- Database ---
 sqlalchemy==2.0.35
 alembic==1.13.2
-psycopg2-binary==2.9.9       # PostgreSQL driver — safe to leave installed even if you start with SQLite
+psycopg2-binary==2.9.9       # PostgreSQL driver 
 
 # --- Auth ---
 passlib[bcrypt]==1.7.4       # password hashing
