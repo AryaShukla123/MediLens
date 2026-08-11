@@ -1,0 +1,36 @@
+# --- Web framework & templating ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+jinja2==3.1.4
+python-multipart==0.0.9      # required for form + file uploads (e.g. eye image upload)
+
+# --- Database ---
+sqlalchemy==2.0.35
+alembic==1.13.2
+psycopg2-binary==2.9.9       # PostgreSQL driver — safe to leave installed even if you start with SQLite
+
+# --- Auth ---
+passlib[bcrypt]==1.7.4       # password hashing
+python-jose[cryptography]==3.3.0   # session/JWT-in-cookie tokens
+
+# --- Config ---
+python-dotenv==1.0.1
+pydantic-settings==2.5.2
+
+# --- Tabular ML ---
+scikit-learn==1.5.2
+xgboost==2.1.1
+shap==0.46.0
+imbalanced-learn==0.12.4
+joblib==1.4.2
+pandas==2.2.3
+numpy==1.26.4
+
+# --- Imaging ML ---
+torch==2.4.1
+torchvision==0.19.1
+grad-cam==1.5.4
+pillow==10.4.0
+
+# --- Chatbot ---
+google-generativeai==0.8.3
