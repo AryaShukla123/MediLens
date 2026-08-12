@@ -1,0 +1,43 @@
+"""
+Prediction table — one row per prediction made by any module
+(heart, diabetes, kidney, stroke, eye). This is what the /history
+page reads from.
+"""
+
+from datetime import datetime, timezone
+
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, JSON
+from sqlalchemy.orm import relationship
+
+from app.database import Base
+
+
+class Prediction(Base):
+    __tablename__ = "predictions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    # Which module produced this: "heart", "diabetes", "kidney", "stroke", "eye"
+    module = Column(String, nullable=False, index=True)
+
+    # Raw form inputs as submitted, stored as JSON so we don't need a
+    # different table schema per disease (each module has different fields)
+    input_data = Column(JSON, nullable=False)
+
+    result = Column(String, nullable=False)          # e.g. "high risk", "moderate DR"
+    confidence = Column(Float, nullable=True)         # model's confidence score, 0-1
+
+    # Top SHAP feature contributions (tabular modules only, null for eye module)
+    shap_summary = Column(JSON, nullable=True)
+
+    # Path to the saved Grad-CAM heatmap image (eye module only, null otherwise)
+    gradcam_image_path = Column(String, nullable=True)
+
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # --- Relationships ---
+    user = relationship("User", back_populates="predictions")
+    chat_messages = relationship(
+        "ChatMessage", back_populates="prediction", cascade="all, delete-orphan"
+    )
