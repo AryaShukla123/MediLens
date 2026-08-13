@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MediLens{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="{% if hide_chrome %}chrome-hidden{% endif %}">
+
+  {% if not hide_chrome %}
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="/" class="brand">MediLens</a>
+
+      <div class="nav-links">
+        {% if current_user %}
+          <a href="/dashboard">Dashboard</a>
+          <a href="/history">History</a>
+          <a href="/chat">Chat</a>
+          <a href="/logout" class="nav-logout">Logout</a>
+        {% else %}
+          <a href="/login">Login</a>
+          <a href="/register" class="nav-cta">Register</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+  {% endif %}
+
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if not hide_chrome %}
+  <footer class="site-footer">
+    <p>MediLens — AI-assisted screening tool. Not a substitute for professional medical diagnosis.</p>
+  </footer>
+  {% endif %}
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

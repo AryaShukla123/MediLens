@@ -21,10 +21,7 @@ class User(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # --- Relationships ---
-    # `back_populates` links these to the matching relationship() on the
-    # other side (defined in history/models.py and chatbot/models.py).
-    # cascade="all, delete-orphan" means: if a user is deleted, their
-    # predictions/messages are deleted too (no orphaned rows left behind).
+    
     predictions = relationship(
         "Prediction", back_populates="user", cascade="all, delete-orphan"
     )

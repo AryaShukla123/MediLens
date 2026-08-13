@@ -1,9 +1,3 @@
-"""
-Central place for all app configuration.
-Reads values from the .env file (via pydantic-settings) so nothing
-sensitive is hardcoded anywhere else in the codebase.
-"""
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -28,7 +22,4 @@ class Settings(BaseSettings):
     )
 
 
-# Import this single instance anywhere you need config values:
-#   from app.config import settings
-#   settings.database_url
 settings = Settings()

@@ -1,9 +1,3 @@
-"""
-Prediction table — one row per prediction made by any module
-(heart, diabetes, kidney, stroke, eye). This is what the /history
-page reads from.
-"""
-
 from datetime import datetime, timezone
 
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, JSON
@@ -18,14 +12,11 @@ class Prediction(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    # Which module produced this: "heart", "diabetes", "kidney", "stroke", "eye"
     module = Column(String, nullable=False, index=True)
 
-    # Raw form inputs as submitted, stored as JSON so we don't need a
-    # different table schema per disease (each module has different fields)
     input_data = Column(JSON, nullable=False)
 
-    result = Column(String, nullable=False)          # e.g. "high risk", "moderate DR"
+    result = Column(String, nullable=False)          
     confidence = Column(Float, nullable=True)         # model's confidence score, 0-1
 
     # Top SHAP feature contributions (tabular modules only, null for eye module)

@@ -1,9 +1,3 @@
-"""
-ChatMessage table — one row per message in the chatbot conversation
-(both the user's question and the assistant's reply are stored as
-separate rows, distinguished by `role`).
-"""
-
 from datetime import datetime, timezone
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
@@ -18,9 +12,6 @@ class ChatMessage(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    # Optional link to the prediction this conversation is about.
-    # Nullable because a user might ask a general question with no
-    # specific prediction attached.
     prediction_id = Column(Integer, ForeignKey("predictions.id"), nullable=True)
 
     role = Column(String, nullable=False)     # "user" or "assistant"

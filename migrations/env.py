@@ -6,6 +6,11 @@ This is what actually runs when you type `alembic upgrade head` or
   1. Pull the real DATABASE_URL from app.config (so alembic.ini can stay blank/safe)
   2. Import Base.metadata from app.database, PLUS every model file, so
      autogenerate can "see" your tables (User, Prediction, ChatMessage, etc.)
+
+NOTE: this file was missing from the project — without it, `alembic upgrade`
+and `alembic revision --autogenerate` fail with "Can't find Python file
+migrations/env.py". Your existing migrations/versions/*.py file still works
+fine once this is back in place.
 """
 
 from logging.config import fileConfig
@@ -23,22 +28,16 @@ from app.auth import models as auth_models          # noqa: F401  (User)
 from app.history import models as history_models    # noqa: F401  (Prediction)
 from app.chatbot import models as chatbot_models     # noqa: F401  (ChatMessage)
 
-# Alembic Config object, gives access to values in alembic.ini
 config = context.config
-
-# Inject the real DB URL at runtime instead of hardcoding it in alembic.ini
 config.set_main_option("sqlalchemy.url", settings.database_url)
 
-# Interpret the config file for logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# This is what autogenerate compares your models against
 target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:
-    """Run migrations without a live DB connection (generates raw SQL)."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -51,7 +50,6 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations with a live DB connection (the normal case)."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
