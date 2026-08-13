@@ -1,13 +1,3 @@
-"""
-Auth helper functions:
-  - password hashing/verification (passlib + bcrypt)
-  - JWT creation/decoding for the session cookie
-  - get_current_user_optional: a FastAPI dependency other routes use
-    to check who's logged in (returns None instead of raising if
-    no valid session — used for pages that behave differently for
-    logged-in vs anonymous users, like the nav bar)
-"""
-
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -22,8 +12,7 @@ from app.auth.models import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# JWT algorithm — kept as a local constant since config.py doesn't
-# define one (there's no need to make this configurable per-environment).
+# JWT algorithm — kept as a local constant since config.py doesn't define one
 ALGORITHM = "HS256"
 COOKIE_NAME = "access_token"
 
@@ -59,8 +48,7 @@ def get_current_user_optional(
 ) -> Optional[User]:
     """
     Extracts the current user from the cookie token if present and valid.
-    Returns None if there's no token or it's invalid (does not raise —
-    use this for pages that should still render for anonymous visitors).
+    Returns None if there's no token or it's invalid
     """
     token = request.cookies.get(COOKIE_NAME)
     if not token:
