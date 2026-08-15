@@ -404,3 +404,326 @@ body.chrome-hidden .site-main {
     padding: 32px 20px 56px;
   }
 }
+
+/* ---------- Module pages (predict forms, shared by all tabular modules) ---------- */
+
+.module-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.module-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  margin-bottom: 10px;
+}
+
+.module-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.module-subtitle {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+.module-header {
+  margin-bottom: 32px;
+}
+
+/* --- Form card --- */
+
+.form-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(19, 39, 63, 0.05);
+}
+
+.form-section {
+  padding-bottom: 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+}
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 8px;
+  padding-bottom: 0;
+}
+
+.form-section-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px 20px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6B7C' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 38px;
+}
+
+.form-input::placeholder {
+  color: #9AA7B4;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--teal);
+  background: var(--paper-raised);
+  box-shadow: 0 0 0 4px rgba(42, 140, 130, 0.12);
+}
+
+.form-input.invalid,
+.form-select.invalid {
+  border-color: var(--error);
+}
+.form-input.invalid:focus,
+.form-select.invalid:focus {
+  box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-error {
+  display: none;
+  font-size: 12px;
+  color: var(--error);
+  margin-top: 5px;
+}
+.field-error.visible {
+  display: block;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+/* ---------- Result page (shared by all tabular modules) ---------- */
+
+.result-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.result-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(19, 39, 63, 0.05);
+}
+
+.result-hero-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.risk-badge.high {
+  background: #FBEAE8;
+  color: var(--error);
+}
+.risk-badge.low {
+  background: rgba(42, 140, 130, 0.12);
+  color: var(--teal-deep);
+}
+
+.confidence-block {
+  min-width: 220px;
+}
+
+.confidence-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.confidence-bar-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: var(--teal);
+  transition: width 0.6s ease;
+}
+.confidence-bar-fill.high {
+  background: var(--error);
+}
+
+.result-section {
+  margin-top: 32px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px 32px;
+}
+
+.result-section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.result-section-subtitle {
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+
+.shap-chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.inputs-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px 20px;
+}
+
+.inputs-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.inputs-summary-item .label {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.inputs-summary-item .value {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.disclaimer-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-top: 28px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border-radius: 8px;
+  border-left: 3px solid var(--teal);
+}
+.disclaimer-note svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--teal-deep);
+}
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--teal);
+  color: var(--teal-deep);
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .result-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .confidence-block {
+    width: 100%;
+  }
+}

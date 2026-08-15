@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Heart Disease Screening — MediLens{% endblock %}
+
+{% block content %}
+<div class="module-page">
+
+  <div class="module-header">
+    <span class="module-eyebrow">Cardiovascular Screening</span>
+    <h1 class="module-title">Heart Disease Risk Assessment</h1>
+    <p class="module-subtitle">
+      Enter your clinical measurements below. Most of these come from a
+      routine checkup or a recent ECG / stress test — check your latest
+      lab report if you're unsure of an exact number.
+    </p>
+  </div>
+
+  {% if error %}
+    <div class="form-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      {{ error }}
+    </div>
+  {% endif %}
+
+  <form method="post" action="/predict/heart" id="heart-form" class="form-card" novalidate>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Personal details</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" class="form-input" min="1" max="120" placeholder="e.g. 54" required>
+          <span class="field-hint">In years</span>
+          <span class="field-error" data-error-for="age"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="sex">Sex</label>
+          <select id="sex" name="sex" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+          </select>
+          <span class="field-error" data-error-for="sex"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Vitals</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="trestbps">Resting blood pressure</label>
+          <input type="number" id="trestbps" name="trestbps" class="form-input" min="80" max="220" placeholder="e.g. 130" required>
+          <span class="field-hint">mm Hg, at rest</span>
+          <span class="field-error" data-error-for="trestbps"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="chol">Serum cholesterol</label>
+          <input type="number" id="chol" name="chol" class="form-input" min="100" max="600" placeholder="e.g. 246" required>
+          <span class="field-hint">mg/dl</span>
+          <span class="field-error" data-error-for="chol"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="thalach">Max heart rate achieved</label>
+          <input type="number" id="thalach" name="thalach" class="form-input" min="60" max="220" placeholder="e.g. 150" required>
+          <span class="field-hint">bpm, during exercise test</span>
+          <span class="field-error" data-error-for="thalach"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="fbs">Fasting blood sugar &gt; 120 mg/dl</label>
+          <select id="fbs" name="fbs" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="fbs"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Symptoms &amp; exercise response</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="cp">Chest pain type</label>
+          <select id="cp" name="cp" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Typical angina</option>
+            <option value="1">Atypical angina</option>
+            <option value="2">Non-anginal pain</option>
+            <option value="3">Asymptomatic</option>
+          </select>
+          <span class="field-error" data-error-for="cp"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="exang">Exercise-induced angina</label>
+          <select id="exang" name="exang" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="exang"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="oldpeak">ST depression (oldpeak)</label>
+          <input type="number" id="oldpeak" name="oldpeak" class="form-input" min="0" max="10" step="0.1" placeholder="e.g. 1.0" required>
+          <span class="field-hint">Induced by exercise, relative to rest</span>
+          <span class="field-error" data-error-for="oldpeak"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="slope">ST segment slope</label>
+          <select id="slope" name="slope" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Upsloping</option>
+            <option value="1">Flat</option>
+            <option value="2">Downsloping</option>
+          </select>
+          <span class="field-error" data-error-for="slope"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">ECG &amp; diagnostic imaging</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="restecg">Resting ECG results</label>
+          <select id="restecg" name="restecg" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Normal</option>
+            <option value="1">ST-T wave abnormality</option>
+            <option value="2">Left ventricular hypertrophy</option>
+          </select>
+          <span class="field-error" data-error-for="restecg"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="ca">Major vessels colored by fluoroscopy</label>
+          <select id="ca" name="ca" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <span class="field-error" data-error-for="ca"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="thal">Thalassemia</label>
+          <select id="thal" name="thal" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Normal</option>
+            <option value="1">Fixed defect</option>
+            <option value="2">Reversible defect</option>
+          </select>
+          <span class="field-error" data-error-for="thal"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">
+        Analyze my risk
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/form_validation.js"></script>
+{% endblock %}
