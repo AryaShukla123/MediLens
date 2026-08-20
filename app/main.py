@@ -4,8 +4,10 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.auth.routes import router as auth_router
-from app.auth.utils import get_current_user_optional
 from app.modules.heart.routes import router as heart_router
+from app.modules.diabetes.routes import router as diabetes_router
+from app.auth.utils import get_current_user_optional
+
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -22,6 +24,7 @@ templates = Jinja2Templates(directory="app/templates")
 # --- Routers ---
 app.include_router(auth_router)
 app.include_router(heart_router)
+app.include_router(diabetes_router)
 
 
 # --- Root ---
