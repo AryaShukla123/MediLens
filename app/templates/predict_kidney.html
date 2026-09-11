@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %}Chronic Kidney Disease Screening — MediLens{% endblock %}
+
+{% block content %}
+<div class="module-page">
+
+  <div class="module-header">
+    <span class="module-eyebrow">Renal Screening</span>
+    <h1 class="module-title">Chronic Kidney Disease Risk Assessment</h1>
+    <p class="module-subtitle">
+      These values come from a routine urinalysis and blood panel.
+      Pull them from your latest lab report — most labs list all of
+      these together on one page.
+    </p>
+  </div>
+
+  {% if error %}
+    <div class="form-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      {{ error }}
+    </div>
+  {% endif %}
+
+  <form method="post" action="/predict/kidney" id="kidney-form" class="form-card" novalidate>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Personal details &amp; vitals</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="age">Age</label>
+          <input type="number" id="age" name="age" class="form-input" min="1" max="100" placeholder="e.g. 55" required>
+          <span class="field-hint">In years</span>
+          <span class="field-error" data-error-for="age"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="bp_diastolic">Diastolic blood pressure</label>
+          <select id="bp_diastolic" name="bp_diastolic" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Normal</option>
+            <option value="1">Elevated</option>
+          </select>
+          <span class="field-error" data-error-for="bp_diastolic"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="bp_limit">Blood pressure category</label>
+          <select id="bp_limit" name="bp_limit" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Within normal limit</option>
+            <option value="1">Exceeds normal limit</option>
+          </select>
+          <span class="field-error" data-error-for="bp_limit"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Urinalysis</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="sg">Urine specific gravity</label>
+          <input type="number" id="sg" name="sg" class="form-input" min="1.000" max="1.030" step="0.001" placeholder="e.g. 1.020" required>
+          <span class="field-error" data-error-for="sg"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="al">Albumin</label>
+          <select id="al" name="al" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">0 — None</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4 — Severe</option>
+          </select>
+          <span class="field-hint">0-4 scale, from your urinalysis</span>
+          <span class="field-error" data-error-for="al"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="su">Sugar</label>
+          <select id="su" name="su" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">0 — None</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 — Severe</option>
+          </select>
+          <span class="field-hint">0-5 scale, from your urinalysis</span>
+          <span class="field-error" data-error-for="su"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="rbc">Red blood cells (urine)</label>
+          <select id="rbc" name="rbc" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Normal</option>
+            <option value="1">Abnormal</option>
+          </select>
+          <span class="field-error" data-error-for="rbc"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="pc">Pus cells</label>
+          <select id="pc" name="pc" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Normal</option>
+            <option value="1">Abnormal</option>
+          </select>
+          <span class="field-error" data-error-for="pc"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="pcc">Pus cell clumps</label>
+          <select id="pcc" name="pcc" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Not present</option>
+            <option value="1">Present</option>
+          </select>
+          <span class="field-error" data-error-for="pcc"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="ba">Bacteria</label>
+          <select id="ba" name="ba" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Not present</option>
+            <option value="1">Present</option>
+          </select>
+          <span class="field-error" data-error-for="ba"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Blood test — metabolic panel</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="bgr">Blood glucose (random)</label>
+          <input type="number" id="bgr" name="bgr" class="form-input" min="50" max="500" placeholder="e.g. 130" required>
+          <span class="field-hint">mg/dL</span>
+          <span class="field-error" data-error-for="bgr"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="bu">Blood urea</label>
+          <input type="number" id="bu" name="bu" class="form-input" min="5" max="400" step="0.1" placeholder="e.g. 48" required>
+          <span class="field-hint">mg/dL</span>
+          <span class="field-error" data-error-for="bu"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="sod">Sodium</label>
+          <input type="number" id="sod" name="sod" class="form-input" min="100" max="170" step="0.1" placeholder="e.g. 138" required>
+          <span class="field-hint">mEq/L</span>
+          <span class="field-error" data-error-for="sod"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="sc">Serum creatinine</label>
+          <input type="number" id="sc" name="sc" class="form-input" min="0.1" max="30" step="0.01" placeholder="e.g. 1.2" required>
+          <span class="field-hint">mg/dL</span>
+          <span class="field-error" data-error-for="sc"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="pot">Potassium</label>
+          <input type="number" id="pot" name="pot" class="form-input" min="2" max="45" step="0.1" placeholder="e.g. 4.5" required>
+          <span class="field-hint">mEq/L</span>
+          <span class="field-error" data-error-for="pot"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="grf">Glomerular filtration rate (GFR)</label>
+          <input type="number" id="grf" name="grf" class="form-input" min="5" max="230" step="0.1" placeholder="e.g. 90" required>
+          <span class="field-hint">mL/min</span>
+          <span class="field-error" data-error-for="grf"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Blood test — hematology</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="hemo">Hemoglobin</label>
+          <input type="number" id="hemo" name="hemo" class="form-input" min="3" max="20" step="0.1" placeholder="e.g. 13.5" required>
+          <span class="field-hint">g/dL</span>
+          <span class="field-error" data-error-for="hemo"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="pcv">Packed cell volume</label>
+          <input type="number" id="pcv" name="pcv" class="form-input" min="10" max="55" step="0.1" placeholder="e.g. 40" required>
+          <span class="field-hint">%</span>
+          <span class="field-error" data-error-for="pcv"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="rbcc">Red blood cell count</label>
+          <input type="number" id="rbcc" name="rbcc" class="form-input" min="2" max="8" step="0.01" placeholder="e.g. 4.8" required>
+          <span class="field-hint">millions/cmm</span>
+          <span class="field-error" data-error-for="rbcc"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="wbcc">White blood cell count</label>
+          <input type="number" id="wbcc" name="wbcc" class="form-input" min="2000" max="26000" placeholder="e.g. 8000" required>
+          <span class="field-hint">cells/cmm</span>
+          <span class="field-error" data-error-for="wbcc"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="form-section-title">Clinical history &amp; symptoms</h3>
+      <div class="form-grid">
+        <div class="input-group">
+          <label for="htn">Hypertension</label>
+          <select id="htn" name="htn" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="htn"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="dm">Diabetes mellitus</label>
+          <select id="dm" name="dm" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="dm"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="cad">Coronary artery disease</label>
+          <select id="cad" name="cad" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="cad"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="appet">Appetite</label>
+          <select id="appet" name="appet" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="0">Good</option>
+            <option value="1">Poor</option>
+          </select>
+          <span class="field-error" data-error-for="appet"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="pe">Pedal edema</label>
+          <select id="pe" name="pe" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="pe"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="ane">Anemia</label>
+          <select id="ane" name="ane" class="form-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <span class="field-error" data-error-for="ane"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">
+        Analyze my risk
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/form_validation.js"></script>
+{% endblock %}
