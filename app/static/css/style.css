@@ -38,7 +38,7 @@ a:hover {
 
 /* ---------- Header / Nav ---------- */
 .site-header {
-  background: var(--navy);
+  background: linear-gradient(90deg, var(--navy-deep) 0%, var(--navy) 100%);
   padding: 0 24px;
 }
 
@@ -93,18 +93,27 @@ a:hover {
 }
 
 /* ---------- Main layout ---------- */
+
 .site-main {
   flex: 1;
   width: 100%;
+  background-color: var(--navy-deep);
+  background-image:
+    radial-gradient(ellipse 900px 480px at 12% -10%, rgba(42, 140, 130, 0.30), transparent 65%),
+    radial-gradient(ellipse 700px 420px at 100% 20%, rgba(42, 140, 130, 0.16), transparent 60%),
+    radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 45%, #14394F 100%);
+  background-repeat: no-repeat, no-repeat, repeat, no-repeat;
+  background-size: auto, auto, 26px 26px, auto;
 }
 
 .site-footer {
   text-align: center;
   padding: 18px 20px;
   font-size: 12.5px;
-  color: var(--ink-soft);
-  border-top: 1px solid var(--line);
-  background: var(--paper-raised);
+  color: #8CA0B3;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--navy-deep);
 }
 
 /* ---------- Auth pages: split-screen layout ---------- */
@@ -419,7 +428,7 @@ body.chrome-hidden .site-main {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--teal-deep);
+  color: #5FD0C4;
   margin-bottom: 10px;
 }
 
@@ -427,13 +436,13 @@ body.chrome-hidden .site-main {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 30px;
   font-weight: 700;
-  color: var(--navy);
+  color: #fff;
   letter-spacing: -0.01em;
   margin-bottom: 10px;
 }
 
 .module-subtitle {
-  color: var(--ink-soft);
+  color: #B9C6D2;
   font-size: 15px;
   line-height: 1.6;
   max-width: 640px;
@@ -447,10 +456,10 @@ body.chrome-hidden .site-main {
 
 .form-card {
   background: var(--paper-raised);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 32px;
-  box-shadow: 0 1px 3px rgba(19, 39, 63, 0.05);
+  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 
 .form-section {
@@ -559,10 +568,10 @@ body.chrome-hidden .site-main {
   gap: 24px;
   flex-wrap: wrap;
   background: var(--paper-raised);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 32px;
-  box-shadow: 0 1px 3px rgba(19, 39, 63, 0.05);
+  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 
 .result-hero-label {
@@ -626,9 +635,10 @@ body.chrome-hidden .site-main {
 .result-section {
   margin-top: 32px;
   background: var(--paper-raised);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 28px 32px;
+  box-shadow: 0 16px 40px rgba(6, 16, 28, 0.35);
 }
 
 .result-section-title {
@@ -680,9 +690,10 @@ body.chrome-hidden .site-main {
   color: var(--ink-soft);
   margin-top: 28px;
   padding: 14px 16px;
-  background: var(--paper);
+  background: var(--paper-raised);
   border-radius: 8px;
   border-left: 3px solid var(--teal);
+  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
 }
 .disclaimer-note svg {
   flex-shrink: 0;
