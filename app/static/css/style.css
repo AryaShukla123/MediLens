@@ -93,7 +93,13 @@ a:hover {
 }
 
 /* ---------- Main layout ---------- */
-
+/* Every non-auth page (predict forms, results, dashboard, history, chat)
+   now shares the same navy/teal identity as the login & register
+   screens: a deep gradient backdrop with a soft teal glow and a faint
+   dot-grid texture, matching .auth-visual. White "raised" cards float
+   on top of it. This paints as the element's own background (not a
+   pseudo-element), so it can't get stacked above the auth-split
+   layout that also lives inside .site-main on auth pages. */
 .site-main {
   flex: 1;
   width: 100%;
@@ -736,5 +742,249 @@ body.chrome-hidden .site-main {
   }
   .confidence-block {
     width: 100%;
+  }
+}
+
+/* ---------- Dashboard ---------- */
+/* This page intentionally breaks from the dark navy canvas the rest of
+   the app uses (predict/result pages) — body.dashboard-theme overrides
+   .site-main/.site-footer with a light, airy background, and the hero
+   + module cards use their own light-theme classes (dash-hero-*,
+   dash-card-*) rather than the dark-theme module-* classes shared by
+   the predict pages. */
+
+body.dashboard-theme .site-main {
+  background-color: #F3F8F7;
+  background-image:
+    radial-gradient(ellipse 900px 460px at 15% -10%, rgba(42, 140, 130, 0.12), transparent 60%),
+    linear-gradient(165deg, #EAF6F4 0%, #F3F7F8 45%, #F6F9FA 100%);
+}
+
+body.dashboard-theme .site-footer {
+  background: #F3F7F8;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+}
+
+/* --- Hero --- */
+
+.dash-hero {
+  text-align: center;
+  padding: 56px 24px 36px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.dash-hero-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  margin-bottom: 12px;
+}
+
+.dash-hero-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.dash-hero-subtitle {
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* --- Module card grid --- */
+
+.dashboard-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.dash-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.dash-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 26px 24px;
+  box-shadow: 0 6px 20px rgba(19, 39, 63, 0.06);
+  color: var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+a.dash-card:hover {
+  text-decoration: none;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(19, 39, 63, 0.12);
+}
+.dash-card.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.dash-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(42, 140, 130, 0.1);
+  color: var(--teal-deep);
+  margin-bottom: 16px;
+}
+.dash-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.dash-card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.dash-card-desc {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.dash-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--teal);
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+a.dash-card:hover .dash-card-btn {
+  background: var(--teal-deep);
+}
+
+.dash-card-badge {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--paper);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* --- Recent activity --- */
+
+.dash-recent-panel {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+  margin-top: 36px;
+  box-shadow: 0 6px 20px rgba(19, 39, 63, 0.05);
+}
+
+.dash-recent-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 16px 16px 10px;
+}
+
+.dash-recent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+}
+.dash-recent-row + .dash-recent-row {
+  border-top: 1px solid var(--line);
+}
+
+.dash-recent-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dash-recent-date {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.dash-empty {
+  padding: 22px 16px 26px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---------- Floating AI assistant button ---------- */
+/* Persistent chat bubble in the corner, not tied to any one page's
+   layout — lives in base.html so it shows for any logged-in user. */
+
+.ai-fab {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 26px rgba(31, 106, 98, 0.4);
+  z-index: 50;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ai-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 16px 34px rgba(31, 106, 98, 0.5);
+  text-decoration: none;
+}
+.ai-fab svg {
+  width: 25px;
+  height: 25px;
+}
+
+@media (max-width: 600px) {
+  .ai-fab {
+    bottom: 18px;
+    right: 18px;
+    width: 50px;
+    height: 50px;
+  }
+  .ai-fab svg {
+    width: 22px;
+    height: 22px;
   }
 }
