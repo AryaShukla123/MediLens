@@ -7,7 +7,9 @@ from app.auth.routes import router as auth_router
 from app.modules.heart.routes import router as heart_router
 from app.modules.diabetes.routes import router as diabetes_router
 from app.modules.kidney.routes import router as kidney_router
+from app.modules.stroke.routes import router as stroke_router
 from app.auth.utils import get_current_user_optional
+
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -26,6 +28,7 @@ app.include_router(auth_router)
 app.include_router(heart_router)
 app.include_router(diabetes_router)
 app.include_router(kidney_router)
+app.include_router(stroke_router)
 
 
 # --- Root ---
