@@ -37,7 +37,20 @@
 
   {% if not hide_chrome %}
   <footer class="site-footer">
-    <p>MediLens — AI-assisted screening tool. Not a substitute for professional medical diagnosis.</p>
+    <div class="footer-top">
+      <div>
+        <span class="footer-brand-name">MediLens</span>
+        <p class="footer-tagline">AI-assisted multi-disease screening, explained with SHAP and Grad-CAM.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/history">History</a>
+        <a href="/chat">Chat</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>MediLens is an AI-assisted screening tool, not a substitute for professional medical diagnosis.</p>
+    </div>
   </footer>
   {% endif %}
 

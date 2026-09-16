@@ -10,11 +10,6 @@ from app.modules.kidney.routes import router as kidney_router
 from app.modules.stroke.routes import router as stroke_router
 from app.auth.utils import get_current_user_optional
 
-# --- IMPORTANT ---
-# Every SQLAlchemy model must be imported somewhere before the app
-# starts handling requests, otherwise relationships that reference a
-# model by string name (e.g. User.chat_messages -> "ChatMessage")
-# can't be resolved and every DB query crashes with a 500 error.
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -76,18 +71,12 @@ AVAILABLE_MODULES = [
     },
 ]
 
-COMING_SOON_MODULES = [
-    {
-        "name": "Diabetic Retinopathy",
-        "description": "Retinal imaging analysis with Grad-CAM explanations.",
-        "icon": "eye",
-    },
-    {
-        "name": "AI Health Assistant",
-        "description": "Chat about your results with SHAP/Grad-CAM context.",
-        "icon": "chat",
-    },
-]
+FEATURED_MODULE = {
+    "name": "Diabetic Retinopathy",
+    "description": "Retinal imaging analysis using a CNN with Grad-CAM visual explanations -- our most advanced module.",
+    "tag": "Deep Learning · CNN + Grad-CAM",
+    "icon": "eye",
+}
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -117,7 +106,7 @@ def dashboard(
             "current_user": current_user,
             "page_class": "dashboard-theme",
             "modules": AVAILABLE_MODULES,
-            "coming_soon_modules": COMING_SOON_MODULES,
+            "featured_module": FEATURED_MODULE,
             "recent_predictions": recent_predictions,
             "total_predictions": total_predictions,
         },
