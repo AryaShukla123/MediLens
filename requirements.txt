@@ -33,6 +33,8 @@ torch==2.4.1
 torchvision==0.19.1
 grad-cam==1.5.4
 pillow==10.4.0
+opencv-python-headless==4.10.0.84   # cv2: image decoding + retina preprocessing
+albumentations==1.4.18              # training-time augmentation only (retinopathy/train.py)
 
 # --- Chatbot ---
 google-generativeai==0.8.3

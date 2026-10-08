@@ -20,4 +20,7 @@ data/processed/
 .vscode/
 .idea/
 
-data/
+# Retinopathy: generated Grad-CAM images + training checkpoints
+app/static/gradcam/*
+!app/static/gradcam/.gitkeep
+checkpoints/
