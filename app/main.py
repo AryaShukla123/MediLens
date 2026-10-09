@@ -9,7 +9,9 @@ from app.modules.diabetes.routes import router as diabetes_router
 from app.modules.kidney.routes import router as kidney_router
 from app.modules.stroke.routes import router as stroke_router
 from app.modules.retinopathy.routes import router as retinopathy_router
+from app.chatbot.routes import router as chatbot_router
 from app.auth.utils import get_current_user_optional
+
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -32,6 +34,7 @@ app.include_router(diabetes_router)
 app.include_router(kidney_router)
 app.include_router(stroke_router)
 app.include_router(retinopathy_router)
+app.include_router(chatbot_router)
 
 
 # --- Root ---
@@ -72,6 +75,11 @@ AVAILABLE_MODULES = [
     },
 ]
 
+# The imaging module is shown on its own, styled differently from the
+# four tabular cards above (CNN + Grad-CAM instead of SHAP on tabular
+# data -- visually distinct on purpose, and centered below the main
+# row). The chatbot has no dashboard card at all -- it lives only in
+# the floating assistant button in base.html.
 FEATURED_MODULE = {
     "slug": "eye",
     "name": "Diabetic Retinopathy",

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}AI Health Assistant — MediLens{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/chatbot.css">
+{% endblock %}
+
+{% block content %}
+<div class="chat-page">
+
+  <div class="module-header">
+    <span class="module-eyebrow">AI Health Assistant</span>
+    <h1 class="module-title">Ask about your results</h1>
+    <p class="module-subtitle">
+      Get your screening results explained in plain language, or ask general health
+      questions. The assistant explains; it doesn't diagnose.
+    </p>
+  </div>
+
+  <div class="chat-card"
+       id="chat-app"
+       data-prediction-id="{{ selected.id if selected else '' }}"
+       data-max-chars="{{ max_chars }}">
+
+    <div class="chat-toolbar">
+      <label for="context-select" class="chat-toolbar-label">Discussing</label>
+      <select id="context-select" class="form-select chat-context-select">
+        <option value="">General health questions</option>
+        {% for o in prediction_options %}
+        <option value="{{ o.id }}" {% if selected and selected.id == o.id %}selected{% endif %}>
+          {{ o.module_name }} — {{ o.result }} ({{ o.date }})
+        </option>
+        {% endfor %}
+      </select>
+      <button type="button" id="clear-btn" class="chat-clear" {% if not messages %}hidden{% endif %}>
+        Clear chat
+      </button>
+    </div>
+
+    {% if selected %}
+    <div class="chat-context-chip">
+      <span class="chat-context-chip-label">{{ selected.module_name }} · {{ selected.date }}</span>
+      <span class="chat-context-chip-result">{{ selected.result }}</span>
+    </div>
+    {% endif %}
+
+    <div class="chat-messages" id="chat-messages" aria-live="polite">
+
+      <div class="chat-empty" id="chat-empty" {% if messages %}hidden{% endif %}>
+        <div class="chat-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <p class="chat-empty-title">
+          {% if selected %}Ask me about this result{% else %}How can I help?{% endif %}
+        </p>
+        <p class="chat-empty-text">
+          {% if selected %}
+            I can see the values you entered and what influenced the result.
+          {% else %}
+            Ask a general question, or choose one of your results above to discuss it in detail.
+          {% endif %}
+        </p>
+        <div class="chat-suggestions">
+          {% if selected and selected.module == "eye" %}
+            <button type="button" class="chat-suggestion" data-prompt="Explain this result in simple terms.">Explain this result in simple terms</button>
+            <button type="button" class="chat-suggestion" data-prompt="What does the heatmap show?">What does the heatmap show?</button>
+            <button type="button" class="chat-suggestion" data-prompt="What should I ask my eye doctor?">What should I ask my eye doctor?</button>
+          {% elif selected %}
+            <button type="button" class="chat-suggestion" data-prompt="Explain this result in simple terms.">Explain this result in simple terms</button>
+            <button type="button" class="chat-suggestion" data-prompt="Which factors mattered most, and what do they mean?">Which factors mattered most?</button>
+            <button type="button" class="chat-suggestion" data-prompt="What should I ask my doctor about this result?">What should I ask my doctor?</button>
+          {% else %}
+            <button type="button" class="chat-suggestion" data-prompt="What can MediLens screen for, and how does it work?">What can MediLens screen for?</button>
+            <button type="button" class="chat-suggestion" data-prompt="How should I read a high-risk result?">How should I read a high-risk result?</button>
+            <button type="button" class="chat-suggestion" data-prompt="What is SHAP, in simple terms?">What is SHAP, in simple terms?</button>
+          {% endif %}
+        </div>
+      </div>
+
+      {% for m in messages %}
+      <div class="chat-msg {{ m.role }}">
+        <div class="chat-bubble" data-role="{{ m.role }}">{{ m.content }}</div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="chat-input-wrap">
+      <div class="chat-input-row">
+        <textarea id="chat-input"
+                  class="chat-input"
+                  rows="1"
+                  maxlength="{{ max_chars }}"
+                  placeholder="Type your question…"
+                  aria-label="Your message"></textarea>
+        <button type="button" id="chat-send" class="chat-send" aria-label="Send message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+      <div class="chat-input-meta">
+        <span>Enter to send · Shift+Enter for a new line</span>
+        <span id="char-count" class="chat-char-count" hidden></span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="disclaimer-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span>The assistant is an AI and can make mistakes. It is not a doctor and can't diagnose or prescribe. For anything urgent, contact your local emergency services.</span>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/chatbot.js"></script>
+{% endblock %}

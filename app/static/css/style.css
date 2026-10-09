@@ -1354,3 +1354,15 @@ a.dash-card:hover .dash-card-btn {
 a.dash-card-featured:hover .dash-card-btn {
   background: #E9F5F3;
 }
+
+/* ---------- "Ask AI about this result" button (result pages) ---------- */
+.btn-ask-ai {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.btn-ask-ai:hover {
+  background: var(--teal-deep);
+  border-color: var(--teal-deep);
+  color: #fff;
+}
