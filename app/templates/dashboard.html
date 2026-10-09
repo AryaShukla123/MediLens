@@ -39,15 +39,18 @@
   </div>
 
   <div class="dash-featured-row">
-    <div class="dash-card dash-card-featured disabled">
+    <a href="/predict/{{ featured_module.slug }}" class="dash-card dash-card-featured">
       <span class="dash-card-featured-tag">{{ featured_module.tag }}</span>
       <div class="dash-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
       </div>
       <h3 class="dash-card-title">{{ featured_module.name }}</h3>
       <p class="dash-card-desc">{{ featured_module.description }}</p>
-      <span class="dash-card-badge">Coming soon</span>
-    </div>
+      <span class="dash-card-btn">
+        Check now
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
   </div>
 
   <div class="dash-recent-panel">
@@ -57,10 +60,10 @@
       {% for p in recent_predictions %}
       <div class="dash-recent-row">
         <div>
-          <div class="dash-recent-name">{{ p.module|capitalize }}</div>
+          <div class="dash-recent-name">{{ {'eye': 'Retinopathy'}.get(p.module, p.module|capitalize) }}</div>
           <div class="dash-recent-date">{{ p.created_at.strftime('%b %d, %Y') }}</div>
         </div>
-        <span class="risk-badge {% if 'High' in p.result %}high{% else %}low{% endif %}">{{ p.result }}</span>
+        <span class="risk-badge {% if 'High' in p.result or (p.module == 'eye' and not p.result.startswith('No ')) %}high{% else %}low{% endif %}">{{ p.result }}</span>
       </div>
       {% endfor %}
     {% else %}

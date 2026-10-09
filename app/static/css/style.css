@@ -94,7 +94,13 @@ a:hover {
 }
 
 /* ---------- Main layout ---------- */
-
+/* Every non-auth page (predict forms, results, dashboard, history, chat)
+   now shares the same navy/teal identity as the login & register
+   screens: a deep gradient backdrop with a soft teal glow and a faint
+   dot-grid texture, matching .auth-visual. White "raised" cards float
+   on top of it. This paints as the element's own background (not a
+   pseudo-element), so it can't get stacked above the auth-split
+   layout that also lives inside .site-main on auth pages. */
 .site-main {
   flex: 1;
   width: 100%;
@@ -109,6 +115,9 @@ a:hover {
 }
 
 /* ---------- Footer ---------- */
+/* Same gradient identity as the header, on every page (including the
+   dashboard's lighter theme) — header and footer bookend the app in
+   a consistent navy/teal shell regardless of what's between them. */
 
 .site-footer {
   background: linear-gradient(90deg, var(--navy-deep) 0%, var(--navy) 100%);
@@ -791,6 +800,13 @@ body.chrome-hidden .site-main {
 }
 
 /* ---------- Dashboard ---------- */
+/* This page intentionally breaks from the dark navy canvas the rest of
+   the app uses (predict/result pages) — body.dashboard-theme overrides
+   .site-main with a light, airy background, and the hero + module
+   cards use their own light-theme classes (dash-hero-*, dash-card-*)
+   rather than the dark-theme module-* classes shared by the predict
+   pages. The header and footer stay the same navy gradient on every
+   page, dashboard included, so they always bookend the app. */
 
 body.dashboard-theme .site-main {
   background-color: #F3F8F7;
@@ -930,6 +946,10 @@ a.dash-card:hover .dash-card-btn {
 }
 
 /* --- Featured card (Diabetic Retinopathy) --- */
+/* The one CNN/imaging module among four tabular ones, so it's set
+   apart on purpose: centered on its own row below the main grid,
+   a dark navy/teal gradient instead of the light card tint, and a
+   small "Deep Learning" tag the regular cards don't have. */
 
 .dash-featured-row {
   display: flex;
@@ -1030,6 +1050,8 @@ a.dash-card:hover .dash-card-btn {
 }
 
 /* ---------- Floating AI assistant button ---------- */
+/* Persistent chat bubble in the corner, not tied to any one page's
+   layout — lives in base.html so it shows for any logged-in user. */
 
 .ai-fab {
   position: fixed;
@@ -1068,4 +1090,267 @@ a.dash-card:hover .dash-card-btn {
     width: 22px;
     height: 22px;
   }
+}
+
+/* ---------- Retinopathy module ---------- */
+
+/* --- Upload dropzone --- */
+
+.upload-drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 24px;
+  border: 2px dashed #C5D3D9;
+  border-radius: 12px;
+  background: var(--paper);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.upload-drop:hover,
+.upload-drop.dragover,
+.upload-drop:focus-within {
+  border-color: var(--teal);
+  background: var(--card-tint);
+}
+
+.upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.upload-empty,
+.upload-filled {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+}
+.upload-empty[hidden],
+.upload-filled[hidden] {
+  display: none;
+}
+.upload-empty svg {
+  color: var(--teal-deep);
+}
+
+.upload-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.upload-hint {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.upload-preview {
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(19, 39, 63, 0.18);
+}
+
+.upload-filename {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  word-break: break-all;
+}
+
+.upload-tips {
+  margin: 18px 0 0 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* --- Result: grade breakdown --- */
+
+.prob-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 56px;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 0;
+}
+
+.prob-name {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.prob-track {
+  height: 9px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.prob-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 6px;
+  background: #9DB8B4;
+  transition: width 0.6s ease;
+}
+
+.prob-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.prob-row.is-predicted .prob-name,
+.prob-row.is-predicted .prob-value {
+  color: var(--navy);
+  font-weight: 700;
+}
+.prob-row.is-predicted .prob-fill {
+  background: var(--teal);
+}
+
+/* --- Result: Grad-CAM viewer --- */
+
+.gradcam-viewer {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.gradcam-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 10px 28px rgba(19, 39, 63, 0.25);
+}
+.gradcam-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.gradcam-heat {
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.gradcam-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.gradcam-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.gradcam-slider input[type="range"] {
+  width: 140px;
+  accent-color: var(--teal);
+}
+.gradcam-slider output {
+  min-width: 38px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gradcam-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.gradcam-legend-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #00007F, #0000FF, #00FFFF, #FFFF00, #FF0000, #7F0000);
+}
+
+.gradcam-summary {
+  margin-top: 20px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.gradcam-caveat {
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* --- Result: grade text + low-confidence callout --- */
+
+.grade-text,
+.grade-next {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.grade-next {
+  margin-top: 10px;
+}
+
+.result-callout {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-left: 3px solid #D9A62B;
+  background: #FFF6E3;
+  color: #6F5110;
+  font-size: 13.5px;
+  line-height: 1.55;
+  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.25);
+}
+.result-callout svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .prob-row {
+    grid-template-columns: 90px 1fr 50px;
+    gap: 10px;
+  }
+  .gradcam-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Featured (retinopathy) dashboard card is now clickable: give its button
+   contrast against the navy-to-teal gradient instead of the teal default. */
+.dash-card-featured .dash-card-btn {
+  background: #fff;
+  color: var(--navy);
+}
+a.dash-card-featured:hover .dash-card-btn {
+  background: #E9F5F3;
 }

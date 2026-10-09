@@ -8,8 +8,8 @@ from app.modules.heart.routes import router as heart_router
 from app.modules.diabetes.routes import router as diabetes_router
 from app.modules.kidney.routes import router as kidney_router
 from app.modules.stroke.routes import router as stroke_router
+from app.modules.retinopathy.routes import router as retinopathy_router
 from app.auth.utils import get_current_user_optional
-
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -31,6 +31,7 @@ app.include_router(heart_router)
 app.include_router(diabetes_router)
 app.include_router(kidney_router)
 app.include_router(stroke_router)
+app.include_router(retinopathy_router)
 
 
 # --- Root ---
@@ -72,6 +73,7 @@ AVAILABLE_MODULES = [
 ]
 
 FEATURED_MODULE = {
+    "slug": "eye",
     "name": "Diabetic Retinopathy",
     "description": "Retinal imaging analysis using a CNN with Grad-CAM visual explanations -- our most advanced module.",
     "tag": "Deep Learning · CNN + Grad-CAM",
