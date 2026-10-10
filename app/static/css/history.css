@@ -1,0 +1,179 @@
+/* ---------- History page ---------- */
+/* Loaded only by history.html. Uses the colour tokens from style.css. */
+
+.history-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px 72px;
+}
+
+/* --- Filter chips --- */
+
+.history-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.history-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #D7DEE5;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.history-chip span {
+  font-size: 12px;
+  opacity: 0.75;
+}
+.history-chip:hover {
+  background: rgba(255, 255, 255, 0.13);
+  text-decoration: none;
+  color: #fff;
+}
+.history-chip.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+
+/* --- Rows --- */
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-row {
+  background: var(--paper-raised);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
+  overflow: hidden;
+}
+
+.history-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+.history-main:hover {
+  background: var(--card-tint);
+  text-decoration: none;
+}
+
+.history-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.history-meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+}
+
+.history-row .risk-badge {
+  font-size: 13.5px;
+  padding: 6px 14px;
+  text-align: center;
+}
+
+.history-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.history-link {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.history-delete-form {
+  margin-left: auto;
+}
+.history-delete {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.history-delete:hover {
+  color: var(--error);
+  background: rgba(192, 57, 43, 0.08);
+}
+
+/* --- Pagination --- */
+
+.history-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+}
+.history-pagination .btn-secondary {
+  padding: 9px 16px;
+}
+.history-page-count {
+  font-size: 13.5px;
+  color: #B9C6D2;
+}
+
+/* --- Empty state --- */
+
+.history-empty {
+  background: var(--paper-raised);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
+  text-align: center;
+  padding: 40px 24px;
+}
+.history-empty-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.history-empty-text {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 4px 0 18px;
+}
+.history-empty .btn-secondary {
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .history-page {
+    padding: 28px 14px 56px;
+  }
+  .history-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

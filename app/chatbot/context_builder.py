@@ -204,7 +204,7 @@ def describe_prediction(prediction: Prediction) -> dict:
 # ---------------------------------------------------------------------------
 
 def _tabular_details(prediction: Prediction, module: str) -> list[str]:
-    labels = _feature_labels(module)
+    labels = feature_labels_for(module)
     lines = []
 
     if prediction.confidence is not None:
@@ -266,7 +266,7 @@ def _eye_details(prediction: Prediction) -> list[str]:
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _feature_labels(module: str) -> dict:
+def feature_labels_for(module: str) -> dict:
     source = _LABEL_SOURCES.get(module)
     if not source:
         return {}

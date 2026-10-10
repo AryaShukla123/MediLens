@@ -8,6 +8,10 @@
 {# ============================ RESULT VIEW ============================ #}
 <div class="result-page">
 
+  {% if saved_on %}
+  <a href="/history" class="saved-banner"><span class="saved-banner-back">&larr; Back to history</span><span>Saved result &middot; {{ saved_on }}</span></a>
+  {% endif %}
+
   <div class="result-hero">
     <div>
       <div class="result-hero-label">Diabetic Retinopathy Screening Result</div>

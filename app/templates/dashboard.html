@@ -54,17 +54,20 @@
   </div>
 
   <div class="dash-recent-panel">
-    <div class="dash-recent-title">Recent activity</div>
+    <div class="dash-recent-head">
+      <div class="dash-recent-title">Recent activity</div>
+      {% if total_predictions > 0 %}<a href="/history" class="dash-recent-all">View all history &rarr;</a>{% endif %}
+    </div>
 
     {% if recent_predictions %}
       {% for p in recent_predictions %}
-      <div class="dash-recent-row">
+      <a href="/history/{{ p.id }}" class="dash-recent-row">
         <div>
           <div class="dash-recent-name">{{ {'eye': 'Retinopathy'}.get(p.module, p.module|capitalize) }}</div>
           <div class="dash-recent-date">{{ p.created_at.strftime('%b %d, %Y') }}</div>
         </div>
         <span class="risk-badge {% if 'High' in p.result or (p.module == 'eye' and not p.result.startswith('No ')) %}high{% else %}low{% endif %}">{{ p.result }}</span>
-      </div>
+      </a>
       {% endfor %}
     {% else %}
       <p class="dash-empty">No screenings yet — run your first one above and it'll show up here.</p>

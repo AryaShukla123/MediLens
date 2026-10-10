@@ -5,6 +5,10 @@
 {% block content %}
 <div class="result-page">
 
+  {% if saved_on %}
+  <a href="/history" class="saved-banner"><span class="saved-banner-back">&larr; Back to history</span><span>Saved result &middot; {{ saved_on }}</span></a>
+  {% endif %}
+
   <div class="result-hero">
     <div>
       <div class="result-hero-label">{{ module_display_name }} Screening Result</div>
@@ -19,11 +23,12 @@
     </div>
 
     <div class="confidence-block">
-      <div class="result-hero-label">Model confidence</div>
+      <div class="result-hero-label">Estimated risk</div>
       <div class="confidence-value">{{ "%.0f"|format(confidence * 100) }}%</div>
       <div class="confidence-bar-track">
         <div class="confidence-bar-fill {% if is_positive %}high{% endif %}" data-confidence-width="{{ (confidence * 100)|round(1) }}"></div>
       </div>
+      <div class="confidence-note">The model's estimated probability of the high-risk class</div>
     </div>
   </div>
 
