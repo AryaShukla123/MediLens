@@ -11,6 +11,7 @@ from app.modules.stroke.routes import router as stroke_router
 from app.modules.retinopathy.routes import router as retinopathy_router
 from app.chatbot.routes import router as chatbot_router
 from app.history.routes import router as history_router
+from app.auth.profile_routes import router as profile_router
 from app.auth.utils import get_current_user_optional
 
 from app.auth.models import User
@@ -37,6 +38,7 @@ app.include_router(stroke_router)
 app.include_router(retinopathy_router)
 app.include_router(chatbot_router)
 app.include_router(history_router)
+app.include_router(profile_router)
 
 
 # --- Root ---

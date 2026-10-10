@@ -1,0 +1,221 @@
+/* ---------- Profile page ---------- */
+/* Loaded only by users/profile.html. Uses the colour tokens from style.css. */
+
+.profile-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 24px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.profile-page .module-header {
+  margin-bottom: 6px;
+}
+
+/* --- Success notice --- */
+
+.profile-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: rgba(95, 208, 196, 0.14);
+  border: 1px solid rgba(95, 208, 196, 0.4);
+  color: #BFEFE9;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* --- Cards --- */
+
+.profile-card {
+  background: var(--paper-raised);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(6, 16, 28, 0.35);
+  padding: 26px 28px;
+}
+
+.profile-card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.profile-card-text {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.profile-card > .profile-card-text:last-child {
+  margin-bottom: 0;
+}
+
+.profile-card .form-error {
+  margin-bottom: 16px;
+}
+
+.profile-submit {
+  align-self: flex-start;
+  padding: 11px 22px;
+}
+
+/* --- Identity + stats --- */
+
+.profile-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profile-identity-text {
+  min-width: 0;
+}
+.profile-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy);
+  overflow-wrap: anywhere;
+}
+.profile-email {
+  font-size: 14px;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+.profile-since {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.profile-stat {
+  text-align: center;
+}
+.profile-stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--teal-deep);
+  line-height: 1.15;
+}
+.profile-stat-date {
+  font-size: 17px;
+  padding-top: 6px;
+}
+.profile-stat-label {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.profile-modules {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.profile-module-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--card-tint);
+  border: 1px solid rgba(42, 140, 130, 0.25);
+  color: var(--teal-deep);
+  font-size: 13px;
+  font-weight: 600;
+}
+.profile-module-chip span {
+  font-weight: 700;
+}
+.profile-module-chip:hover {
+  background: #fff;
+  border-color: var(--teal);
+  text-decoration: none;
+}
+.profile-module-all {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* --- Danger zone --- */
+
+.profile-danger {
+  border-color: rgba(192, 57, 43, 0.35);
+}
+.profile-danger .profile-card-title {
+  color: var(--error);
+}
+
+.btn-danger {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--error);
+  border: 1.5px solid var(--error);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-danger:hover {
+  background: var(--error);
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .profile-page {
+    padding: 28px 14px 56px;
+  }
+  .profile-card {
+    padding: 22px 18px;
+  }
+  .profile-stat-value {
+    font-size: 22px;
+  }
+  .profile-stat-date {
+    font-size: 14px;
+    padding-top: 5px;
+  }
+  .profile-module-all {
+    margin-left: 0;
+    width: 100%;
+  }
+}

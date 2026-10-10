@@ -98,7 +98,7 @@ def _stored_gradcam(p: Prediction) -> Optional[dict]:
     return {"urls": urls}
 
 
-def _delete_gradcam_files(p: Prediction) -> None:
+def delete_gradcam_files(p: Prediction) -> None:
     path = p.gradcam_image_path or ""
     match = _GRADCAM_FILE.match(os.path.basename(path))
     if not match or not path.startswith(GRADCAM_URL_PREFIX + "/"):
@@ -261,7 +261,7 @@ def history_delete(
 
     p = _get_own(db, current_user.id, prediction_id)
     if p is not None:
-        _delete_gradcam_files(p)
+        delete_gradcam_files(p)
         db.delete(p)  # cascades to this result's chat messages
         db.commit()
 

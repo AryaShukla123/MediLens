@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — MediLens{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/profile.css">
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+  <div class="module-header">
+    <span class="module-eyebrow">Account</span>
+    <h1 class="module-title">Your profile</h1>
+    <p class="module-subtitle">Manage your account details and see how you've been using MediLens.</p>
+  </div>
+
+  {% if notice %}
+  <div class="profile-notice" role="status">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 6L9 17l-5-5"/></svg>
+    {{ notice }}
+  </div>
+  {% endif %}
+
+  <!-- Account summary -->
+  <section class="profile-card">
+    <div class="profile-identity">
+      <div class="profile-avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="profile-identity-text">
+        <div class="profile-name">{{ current_user.full_name or "No name set" }}</div>
+        <div class="profile-email">{{ current_user.email }}</div>
+        {% if member_since %}<div class="profile-since">Member since {{ member_since }}</div>{% endif %}
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-value">{{ stats.screenings }}</div>
+        <div class="profile-stat-label">Screenings</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value">{{ stats.chats }}</div>
+        <div class="profile-stat-label">Questions to the AI</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value profile-stat-date">{{ stats.last_screening or "—" }}</div>
+        <div class="profile-stat-label">Last screening</div>
+      </div>
+    </div>
+
+    {% if stats.by_module %}
+    <div class="profile-modules">
+      {% for m in stats.by_module %}
+      <a href="/history?module={{ m.slug }}" class="profile-module-chip">{{ m.name }} <span>{{ m.count }}</span></a>
+      {% endfor %}
+      <a href="/history" class="profile-module-all">View all history &rarr;</a>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- Display name -->
+  <section class="profile-card" id="name">
+    <h2 class="profile-card-title">Display name</h2>
+    <p class="profile-card-text">This is the name shown on your account.</p>
+
+    {% if error and error_section == "name" %}
+    <div class="form-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/profile/name" class="auth-form profile-form">
+      <div class="input-group">
+        <label for="full_name">Full name</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" id="full_name" name="full_name" value="{{ name_value }}" maxlength="{{ max_name }}" autocomplete="name" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary profile-submit">Save name</button>
+    </form>
+  </section>
+
+  <!-- Email (read-only) -->
+  <section class="profile-card">
+    <h2 class="profile-card-title">Email</h2>
+    <p class="profile-card-text">{{ current_user.email }} &mdash; this is the address you log in with.</p>
+  </section>
+
+  <!-- Change password -->
+  <section class="profile-card" id="password">
+    <h2 class="profile-card-title">Change password</h2>
+    <p class="profile-card-text">Use at least 8 characters.</p>
+
+    {% if error and error_section == "password" %}
+    <div class="form-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/profile/password" class="auth-form profile-form">
+      <div class="input-group">
+        <label for="current_password">Current password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="current_password" name="current_password" autocomplete="current-password" required>
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="new_password">New password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="new_password" name="new_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="confirm_password">Confirm new password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="confirm_password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary profile-submit">Change password</button>
+    </form>
+  </section>
+
+  <!-- Danger zone -->
+  <section class="profile-card profile-danger" id="delete">
+    <h2 class="profile-card-title">Delete account</h2>
+    <p class="profile-card-text">
+      This permanently deletes your account, all {{ stats.screenings }} saved screening{{ "s" if stats.screenings != 1 else "" }},
+      retinal images and chat conversations. It can't be undone.
+    </p>
+
+    {% if error and error_section == "delete" %}
+    <div class="form-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" action="/profile/delete" class="auth-form profile-form" id="delete-form">
+      <div class="input-group">
+        <label for="delete_password">Enter your password to confirm</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="delete_password" name="password" autocomplete="current-password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn-danger profile-submit">Delete my account</button>
+    </form>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  var deleteForm = document.getElementById("delete-form");
+  if (deleteForm) {
+    deleteForm.addEventListener("submit", function (e) {
+      if (!window.confirm("Permanently delete your account and all your data? This can't be undone.")) {
+        e.preventDefault();
+      }
+    });
+  }
+</script>
+{% endblock %}
