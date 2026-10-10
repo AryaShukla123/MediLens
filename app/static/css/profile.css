@@ -1,13 +1,17 @@
 /* ---------- Profile page ---------- */
 /* Loaded only by users/profile.html. Uses the colour tokens from style.css. */
 
+/* Page width and gutters come from the shared page shell in style.css.
+   Profile is a settings column: same left edge as every other page's
+   heading, but its cards are narrower than a results page. */
 .profile-page {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 48px 24px 72px;
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+.profile-page > :not(.module-header) {
+  width: 100%;
+  max-width: 680px;
 }
 
 .profile-page .module-header {
@@ -34,9 +38,9 @@
 .profile-card {
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 18px 44px rgba(6, 16, 28, 0.35);
-  padding: 26px 28px;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-pad);
 }
 
 .profile-card-title {
@@ -201,11 +205,8 @@
 }
 
 @media (max-width: 520px) {
-  .profile-page {
-    padding: 28px 14px 56px;
-  }
   .profile-card {
-    padding: 22px 18px;
+    padding: var(--card-pad-mobile);
   }
   .profile-stat-value {
     font-size: 22px;

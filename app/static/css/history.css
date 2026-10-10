@@ -1,11 +1,7 @@
 /* ---------- History page ---------- */
 /* Loaded only by history.html. Uses the colour tokens from style.css. */
 
-.history-page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 48px 24px 72px;
-}
+/* Page width and gutters come from the shared page shell in style.css. */
 
 /* --- Filter chips --- */
 
@@ -55,8 +51,8 @@
 .history-row {
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow-soft);   /* dense list: lighter shadow than full-size cards */
   overflow: hidden;
 }
 
@@ -147,8 +143,8 @@
 .history-empty {
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
   text-align: center;
   padding: 40px 24px;
 }
@@ -168,9 +164,6 @@
 }
 
 @media (max-width: 600px) {
-  .history-page {
-    padding: 28px 14px 56px;
-  }
   .history-main {
     flex-direction: column;
     align-items: flex-start;

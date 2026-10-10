@@ -7,11 +7,7 @@ body.chat-theme .ai-fab {
   display: none;
 }
 
-.chat-page {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 48px 24px 72px;
-}
+/* Page width and gutters come from the shared page shell in style.css. */
 
 .chat-card {
   display: flex;
@@ -20,8 +16,8 @@ body.chat-theme .ai-fab {
   min-height: 460px;
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
   overflow: hidden;
 }
 
@@ -367,9 +363,6 @@ body.chat-theme .ai-fab {
 /* --- Small screens --- */
 
 @media (max-width: 600px) {
-  .chat-page {
-    padding: 28px 14px 56px;
-  }
   .chat-card {
     height: calc(100vh - 190px);
     min-height: 420px;

@@ -17,6 +17,18 @@
   --ink-soft: #5B6B7C;
   --line: #DFE3E6;
   --error: #C0392B;
+
+  /* Shared layout + card tokens: every page uses these, so widths,
+     gutters and card depth stay consistent across the app. */
+  --page-width: 860px;          /* reading pages: results, history, chat, profile */
+  --page-width-wide: 1080px;    /* form pages (multi-column inputs) */
+  --page-padding: 48px 24px 80px;
+  --page-padding-mobile: 28px 16px 84px;   /* extra bottom space clears the floating chat button */
+  --card-radius: 14px;
+  --card-pad: 28px 32px;
+  --card-pad-mobile: 22px 18px;
+  --card-shadow: 0 18px 44px rgba(6, 16, 28, 0.38), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  --card-shadow-soft: 0 10px 28px rgba(6, 16, 28, 0.28);   /* thin notes and callouts */
 }
 
 body {
@@ -476,11 +488,7 @@ body.chrome-hidden .site-main {
 
 /* ---------- Module pages (predict forms, shared by all tabular modules) ---------- */
 
-.module-page {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
-}
+/* Page shells (width, centring, gutters) are defined once, in "Shared page shell" below. */
 
 .module-eyebrow {
   display: inline-block;
@@ -517,9 +525,9 @@ body.chrome-hidden .site-main {
 .form-card {
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 32px;
-  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: var(--card-shadow);
 }
 
 .form-section {
@@ -615,11 +623,6 @@ body.chrome-hidden .site-main {
 
 /* ---------- Result page (shared by all tabular modules) ---------- */
 
-.result-page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
-}
 
 .result-hero {
   display: flex;
@@ -629,9 +632,9 @@ body.chrome-hidden .site-main {
   flex-wrap: wrap;
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 32px;
-  box-shadow: 0 24px 60px rgba(6, 16, 28, 0.45), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: var(--card-shadow);
 }
 
 .result-hero-label {
@@ -696,9 +699,9 @@ body.chrome-hidden .site-main {
   margin-top: 32px;
   background: var(--paper-raised);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 28px 32px;
-  box-shadow: 0 16px 40px rgba(6, 16, 28, 0.35);
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  box-shadow: var(--card-shadow);
 }
 
 .result-section-title {
@@ -753,7 +756,7 @@ body.chrome-hidden .site-main {
   background: var(--paper-raised);
   border-radius: 8px;
   border-left: 3px solid var(--teal);
-  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.3);
+  box-shadow: var(--card-shadow-soft);
 }
 .disclaimer-note svg {
   flex-shrink: 0;
@@ -1327,7 +1330,7 @@ a.dash-card:hover .dash-card-btn {
   color: #6F5110;
   font-size: 13.5px;
   line-height: 1.55;
-  box-shadow: 0 10px 28px rgba(6, 16, 28, 0.25);
+  box-shadow: var(--card-shadow-soft);
 }
 .result-callout svg {
   flex-shrink: 0;
@@ -1412,4 +1415,102 @@ a.dash-recent-row {
 a.dash-recent-row:hover {
   background: rgba(255, 255, 255, 0.7);
   text-decoration: none;
+}
+
+/* ---------- Shared page shell (Stage 8 consistency pass) ---------- */
+/* One place for page width, centring and gutters, so every screen lines
+   up. Form pages use the wide tier; everything else reads at --page-width. */
+
+.module-page,
+.result-page,
+.history-page,
+.chat-page,
+.profile-page {
+  margin: 0 auto;
+  padding: var(--page-padding);
+}
+.result-page,
+.history-page,
+.chat-page,
+.profile-page {
+  max-width: var(--page-width);
+}
+.module-page {
+  max-width: var(--page-width-wide);
+}
+
+/* Recent-activity badges on the dashboard match the history-page pills. */
+.dash-recent-row .risk-badge {
+  font-size: 13.5px;
+  padding: 6px 14px;
+  text-align: center;
+}
+
+/* Result-page action buttons: same order and spacing on every result page. */
+.result-actions .btn-secondary {
+  white-space: nowrap;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 640px) {
+  .module-page,
+  .result-page,
+  .history-page,
+  .chat-page,
+  .profile-page {
+    padding: var(--page-padding-mobile);
+  }
+
+  .form-card,
+  .result-hero,
+  .result-section {
+    padding: var(--card-pad-mobile);
+  }
+
+  /* Nav: brand on the first row, links spread across the second, so the
+     bar never forces the page to scroll sideways. */
+  .site-header {
+    padding: 0 16px;
+  }
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 0 8px;
+    row-gap: 4px;
+  }
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .nav-links a {
+    font-size: 14px;
+    padding: 4px 0;
+  }
+
+  .site-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Dashboard recent activity: date under the name, badge on its own line. */
+  .dash-recent-row {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .dash-recent-row > div:first-child {
+    flex: 1 1 100%;   /* badge always sits on its own line, so rows look the same */
+  }
+  .dash-recent-row .risk-badge {
+    max-width: 100%;
+  }
+
+  /* Result actions stack full-width on phones: easy tap targets, no ragged wrapping. */
+  .result-actions {
+    flex-direction: column;
+  }
+  .result-actions .btn-secondary {
+    justify-content: center;
+    white-space: normal;
+  }
 }

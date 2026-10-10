@@ -63,7 +63,7 @@
       {% for p in recent_predictions %}
       <a href="/history/{{ p.id }}" class="dash-recent-row">
         <div>
-          <div class="dash-recent-name">{{ {'eye': 'Retinopathy'}.get(p.module, p.module|capitalize) }}</div>
+          <div class="dash-recent-name">{{ {'heart': 'Heart Disease', 'diabetes': 'Diabetes', 'kidney': 'Chronic Kidney Disease', 'stroke': 'Stroke Risk', 'eye': 'Diabetic Retinopathy'}.get(p.module, p.module|capitalize) }}</div>
           <div class="dash-recent-date">{{ p.created_at.strftime('%b %d, %Y') }}</div>
         </div>
         <span class="risk-badge {% if 'High' in p.result or (p.module == 'eye' and not p.result.startswith('No ')) %}high{% else %}low{% endif %}">{{ p.result }}</span>
