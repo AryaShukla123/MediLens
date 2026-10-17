@@ -30,7 +30,7 @@ from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from app.auth.utils import get_current_user_optional
-from app.chatbot.context_builder import build_system_prompt, describe_prediction
+from app.chatbot.context_builder import MODULE_DISPLAY_NAMES, build_system_prompt, describe_prediction
 from app.chatbot.gemini_client import ChatbotError, generate_reply
 from app.chatbot.models import ChatMessage
 from app.database import get_db
@@ -88,7 +88,11 @@ def _get_own_prediction(db: Session, user_id: int, prediction_id: Optional[int])
         return None
     return (
         db.query(Prediction)
-        .filter(Prediction.id == prediction_id, Prediction.user_id == user_id)
+        .filter(
+            Prediction.id == prediction_id,
+            Prediction.user_id == user_id,
+            Prediction.module.in_(list(MODULE_DISPLAY_NAMES)),
+        )
         .first()
     )
 
@@ -103,7 +107,7 @@ def _thread_query(db: Session, user_id: int, prediction_id: Optional[int]):
 def _recent_predictions(db: Session, user_id: int, limit: int) -> list[Prediction]:
     return (
         db.query(Prediction)
-        .filter(Prediction.user_id == user_id)
+        .filter(Prediction.user_id == user_id, Prediction.module.in_(list(MODULE_DISPLAY_NAMES)))
         .order_by(desc(Prediction.created_at), desc(Prediction.id))
         .limit(limit)
         .all()

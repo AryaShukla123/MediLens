@@ -1,3 +1,20 @@
+"""
+Heart Disease module routes.
+
+  GET  /predict/heart   - renders the input form
+  POST /predict/heart   - validates form input, runs the model, saves a
+                           Prediction row, renders the shared result page
+
+Both routes require a logged-in user (redirect to /login otherwise) —
+this is the template the other 3 tabular modules (diabetes, kidney,
+stroke) will copy in Stage 4.
+
+Renders app/templates/predict_heart.html (input form) and
+app/templates/result.html (shared result page, reused by every tabular
+module). Each prediction is explained with SHAP (app/shared/shap_utils.py)
+so the result page can show which inputs drove the risk score.
+"""
+
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -104,7 +121,6 @@ def post_heart_predict(
         result=result_label,
         confidence=prediction_output["probability"],
         shap_summary=shap_data,
-        gradcam_image_path=None,
     )
     db.add(new_prediction)
     db.commit()

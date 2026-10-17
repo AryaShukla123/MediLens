@@ -1,42 +1,52 @@
 # Render Blueprint for MediLens (native Python runtime, no Docker).
 # Deploy: push the repo to GitHub, then Render dashboard > New > Blueprint.
-# Render asks for GEMINI_API_KEY (marked sync: false); everything else is set here.
-
-databases:
-  - name: medilens-db
-    databaseName: medilens
-    user: medilens
-    # Free Postgres is deleted 30 days after creation (14-day grace to upgrade).
-    # Fine for a demo; switch to a paid plan before you rely on the data.
-    plan: free
-    ipAllowList: []   # internal connections only (no access from the public internet)
+# Render will ask for the two values marked sync: false (DATABASE_URL, GEMINI_API_KEY).
 
 services:
   - type: web
     name: medilens
     runtime: python
-    # PyTorch + xgboost + shap need well over 512 MB of RAM, so the 512 MB
-    # "free" and "starter" instances will most likely be killed for running out
-    # of memory. "standard" has 2 GB.
-    plan: standard
-    # PyTorch is installed first from its CPU-only index (the default Linux wheel
-    # bundles CUDA: ~2 GB of downloads this app never uses).
-    buildCommand: pip install torch==2.4.1 torchvision==0.19.1 --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
+    # The app uses about 330 MB of RAM (measured), so it fits the free instance
+    # (512 MB). Free instances go to sleep after ~15 minutes without visitors and
+    # take about a minute to wake up on the next request.
+    plan: free
+    buildCommand: pip install -r requirements.txt
     startCommand: bash start.sh
     healthCheckPath: /login
     envVars:
-      # Pinned: the project's torch/numpy versions don't support Python 3.13.
+      # Pinned: numpy 1.26.4 (see requirements.txt) has no Python 3.13 build.
       - key: PYTHON_VERSION
         value: 3.11.9
       - key: ENVIRONMENT
         value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: medilens-db
-          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
         value: gemini-3.5-flash
+      # Paste a PostgreSQL connection string when Render asks for it.
+      # Recommended: a free external Postgres (for example Neon), because its data
+      # does not expire. Render's own free Postgres is deleted 30 days after it is
+      # created, which would take every account and saved result with it.
+      # (SQLite is not an option here: the free instance's disk is wiped on every
+      # restart and deploy.)
+      - key: DATABASE_URL
+        sync: false
+
+# To use Render's own free Postgres instead (fine for a short demo), delete the
+# DATABASE_URL entry above, add this to envVars:
+#
+#      - key: DATABASE_URL
+#        fromDatabase:
+#          name: medilens-db
+#          property: connectionString
+#
+# and add this at the bottom of the file:
+#
+# databases:
+#   - name: medilens-db
+#     databaseName: medilens
+#     user: medilens
+#     plan: free
+#     ipAllowList: []

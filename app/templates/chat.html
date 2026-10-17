@@ -62,11 +62,7 @@
           {% endif %}
         </p>
         <div class="chat-suggestions">
-          {% if selected and selected.module == "eye" %}
-            <button type="button" class="chat-suggestion" data-prompt="Explain this result in simple terms.">Explain this result in simple terms</button>
-            <button type="button" class="chat-suggestion" data-prompt="What does the heatmap show?">What does the heatmap show?</button>
-            <button type="button" class="chat-suggestion" data-prompt="What should I ask my eye doctor?">What should I ask my eye doctor?</button>
-          {% elif selected %}
+          {% if selected %}
             <button type="button" class="chat-suggestion" data-prompt="Explain this result in simple terms.">Explain this result in simple terms</button>
             <button type="button" class="chat-suggestion" data-prompt="Which factors mattered most, and what do they mean?">Which factors mattered most?</button>
             <button type="button" class="chat-suggestion" data-prompt="What should I ask my doctor about this result?">What should I ask my doctor?</button>

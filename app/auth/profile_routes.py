@@ -35,7 +35,7 @@ from app.chatbot.context_builder import MODULE_DISPLAY_NAMES
 from app.chatbot.models import ChatMessage
 from app.database import get_db
 from app.history.models import Prediction
-from app.history.routes import MODULE_ORDER, delete_gradcam_files
+from app.history.routes import MODULE_ORDER
 
 logger = logging.getLogger(__name__)
 
@@ -67,13 +67,13 @@ def _initials(user: User) -> str:
 def _stats(db: Session, user: User) -> dict:
     counts = dict(
         db.query(Prediction.module, func.count(Prediction.id))
-        .filter(Prediction.user_id == user.id)
+        .filter(Prediction.user_id == user.id, Prediction.module.in_(MODULE_ORDER))
         .group_by(Prediction.module)
         .all()
     )
     last = (
         db.query(func.max(Prediction.created_at))
-        .filter(Prediction.user_id == user.id)
+        .filter(Prediction.user_id == user.id, Prediction.module.in_(MODULE_ORDER))
         .scalar()
     )
     chats = (
@@ -226,12 +226,6 @@ def delete_account(
             error="That password is incorrect, so nothing was deleted.",
             error_section="delete", status_code=400,
         )
-
-    # Grad-CAM images live on disk, so remove them before the rows go.
-    for prediction in db.query(Prediction).filter(
-        Prediction.user_id == current_user.id, Prediction.module == "eye"
-    ):
-        delete_gradcam_files(prediction)
 
     # Predictions and chat messages are removed by the User relationship cascades.
     db.delete(current_user)

@@ -130,8 +130,8 @@
   <section class="profile-card profile-danger" id="delete">
     <h2 class="profile-card-title">Delete account</h2>
     <p class="profile-card-text">
-      This permanently deletes your account, all {{ stats.screenings }} saved screening{{ "s" if stats.screenings != 1 else "" }},
-      retinal images and chat conversations. It can't be undone.
+      This permanently deletes your account, all {{ stats.screenings }} saved screening{{ "s" if stats.screenings != 1 else "" }}
+      and chat conversations. It can't be undone.
     </p>
 
     {% if error and error_section == "delete" %}

@@ -1,3 +1,24 @@
+"""
+Chronic Kidney Disease module routes.
+
+  GET  /predict/kidney   - renders the input form
+  POST /predict/kidney   - validates form input, runs the model, saves a
+                            Prediction row, renders the shared result page
+
+Same pattern as heart/routes.py and diabetes/routes.py: login required,
+SHAP explanation via the shared app/shared/shap_utils.py.
+
+NOTE on field labels: several binary fields in the source dataset
+(rbc, pc, pcc, ba, htn, dm, cad, appet, pe, ane, and the two "bp"
+columns) reached us already numerically encoded, with their original
+text categories lost. The Yes/No, Normal/Abnormal, etc. labels below
+follow the standard UCI Chronic Kidney Disease convention (the most
+common encoding used in public work with this dataset), but this is
+an assumption, not a value we could verify from the file itself — if
+you have the original Kaggle notebook that produced this derived
+dataset, it's worth double-checking the 0/1 direction against it.
+"""
+
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -141,7 +162,6 @@ def post_kidney_predict(
         result=result_label,
         confidence=prediction_output["probability"],
         shap_summary=shap_data,
-        gradcam_image_path=None,
     )
     db.add(new_prediction)
     db.commit()

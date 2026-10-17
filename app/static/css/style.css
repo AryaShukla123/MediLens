@@ -853,6 +853,9 @@ body.dashboard-theme .site-main {
 }
 
 /* --- Module card grid --- */
+/* Four dark navy-to-teal cards in a 2x2 grid (one column on phones). Each has a
+   small category tag, an icon tile, the module name, a short description and a
+   white call-to-action button. */
 
 .dashboard-page {
   max-width: 1080px;
@@ -862,116 +865,30 @@ body.dashboard-theme .site-main {
 
 .dash-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
 .dash-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  background: var(--card-tint);
-  border: 1px solid rgba(42, 140, 130, 0.16);
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal-deep) 100%);
+  border: none;
   border-radius: 14px;
-  padding: 26px 24px;
-  box-shadow: 0 6px 20px rgba(19, 39, 63, 0.06);
-  color: var(--ink);
+  padding: 30px 28px;
+  box-shadow: 0 10px 28px rgba(19, 39, 63, 0.22);
+  color: #fff;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 a.dash-card:hover {
   text-decoration: none;
   transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(19, 39, 63, 0.12);
-}
-.dash-card.disabled {
-  opacity: 0.6;
-  cursor: default;
+  box-shadow: 0 18px 38px rgba(19, 39, 63, 0.32);
 }
 
-.dash-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: rgba(42, 140, 130, 0.1);
-  color: var(--teal-deep);
-  margin-bottom: 16px;
-}
-.dash-card-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.dash-card-title {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 16.5px;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 6px;
-}
-
-.dash-card-desc {
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  line-height: 1.55;
-  margin-bottom: 18px;
-  flex: 1;
-}
-
-.dash-card-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--teal);
-  color: #fff;
-  padding: 9px 16px;
-  border-radius: 8px;
-  font-size: 13.5px;
-  font-weight: 600;
-  transition: background 0.15s ease;
-}
-a.dash-card:hover .dash-card-btn {
-  background: var(--teal-deep);
-}
-
-.dash-card-badge {
-  display: inline-block;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  background: var(--paper);
-  padding: 6px 12px;
-  border-radius: 999px;
-}
-
-/* --- Featured card (Diabetic Retinopathy) --- */
-/* The one CNN/imaging module among four tabular ones, so it's set
-   apart on purpose: centered on its own row below the main grid,
-   a dark navy/teal gradient instead of the light card tint, and a
-   small "Deep Learning" tag the regular cards don't have. */
-
-.dash-featured-row {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.dash-card-featured {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--teal-deep) 100%);
-  border: none;
-  color: #fff;
-  width: 100%;
-  max-width: 420px;
-  align-items: center;
-  text-align: center;
-  padding: 30px 28px;
-}
-
-.dash-card-featured-tag {
+.dash-card-tag {
   display: inline-block;
   font-size: 11px;
   font-weight: 700;
@@ -984,22 +901,58 @@ a.dash-card:hover .dash-card-btn {
   margin-bottom: 14px;
 }
 
-.dash-card-featured .dash-card-icon {
+.dash-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
+  margin-bottom: 16px;
+}
+.dash-card-icon svg {
+  width: 22px;
+  height: 22px;
 }
 
-.dash-card-featured .dash-card-title {
+.dash-card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
   color: #fff;
+  margin-bottom: 6px;
 }
 
-.dash-card-featured .dash-card-desc {
+.dash-card-desc {
+  font-size: 13.5px;
   color: rgba(255, 255, 255, 0.82);
+  line-height: 1.55;
+  margin-bottom: 20px;
+  flex: 1;
 }
 
-.dash-card-featured .dash-card-badge {
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
+.dash-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+  color: var(--navy);
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+a.dash-card:hover .dash-card-btn {
+  background: #E9F5F3;
+}
+
+@media (max-width: 700px) {
+  .dash-card-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* --- Recent activity --- */
@@ -1095,268 +1048,6 @@ a.dash-card:hover .dash-card-btn {
   }
 }
 
-/* ---------- Retinopathy module ---------- */
-
-/* --- Upload dropzone --- */
-
-.upload-drop {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 220px;
-  padding: 24px;
-  border: 2px dashed #C5D3D9;
-  border-radius: 12px;
-  background: var(--paper);
-  cursor: pointer;
-  text-align: center;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-.upload-drop:hover,
-.upload-drop.dragover,
-.upload-drop:focus-within {
-  border-color: var(--teal);
-  background: var(--card-tint);
-}
-
-.upload-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  overflow: hidden;
-}
-
-.upload-empty,
-.upload-filled {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--ink-soft);
-}
-.upload-empty[hidden],
-.upload-filled[hidden] {
-  display: none;
-}
-.upload-empty svg {
-  color: var(--teal-deep);
-}
-
-.upload-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.upload-hint {
-  font-size: 12.5px;
-  color: var(--ink-soft);
-}
-
-.upload-preview {
-  max-width: 100%;
-  max-height: 260px;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(19, 39, 63, 0.18);
-}
-
-.upload-filename {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--ink);
-  word-break: break-all;
-}
-
-.upload-tips {
-  margin: 18px 0 0 18px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--ink-soft);
-}
-
-/* --- Result: grade breakdown --- */
-
-.prob-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 56px;
-  align-items: center;
-  gap: 14px;
-  padding: 7px 0;
-}
-
-.prob-name {
-  font-size: 13.5px;
-  color: var(--ink-soft);
-}
-
-.prob-track {
-  height: 9px;
-  border-radius: 6px;
-  background: var(--line);
-  overflow: hidden;
-}
-
-.prob-fill {
-  width: 0;
-  height: 100%;
-  border-radius: 6px;
-  background: #9DB8B4;
-  transition: width 0.6s ease;
-}
-
-.prob-value {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-soft);
-  text-align: right;
-}
-
-.prob-row.is-predicted .prob-name,
-.prob-row.is-predicted .prob-value {
-  color: var(--navy);
-  font-weight: 700;
-}
-.prob-row.is-predicted .prob-fill {
-  background: var(--teal);
-}
-
-/* --- Result: Grad-CAM viewer --- */
-
-.gradcam-viewer {
-  max-width: 440px;
-  margin: 0 auto;
-}
-
-.gradcam-stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 10px 28px rgba(19, 39, 63, 0.25);
-}
-.gradcam-stage img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.gradcam-heat {
-  opacity: 0.7;
-  transition: opacity 0.15s ease;
-  pointer-events: none;
-}
-
-.gradcam-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 16px;
-}
-
-.gradcam-slider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-.gradcam-slider input[type="range"] {
-  width: 140px;
-  accent-color: var(--teal);
-}
-.gradcam-slider output {
-  min-width: 38px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.gradcam-legend {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-.gradcam-legend-bar {
-  flex: 1;
-  height: 8px;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #00007F, #0000FF, #00FFFF, #FFFF00, #FF0000, #7F0000);
-}
-
-.gradcam-summary {
-  margin-top: 20px;
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: var(--ink);
-}
-
-.gradcam-caveat {
-  margin-top: 8px;
-  font-size: 12.5px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-}
-
-/* --- Result: grade text + low-confidence callout --- */
-
-.grade-text,
-.grade-next {
-  font-size: 14.5px;
-  line-height: 1.65;
-  color: var(--ink);
-}
-.grade-next {
-  margin-top: 10px;
-}
-
-.result-callout {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  margin-top: 20px;
-  padding: 14px 16px;
-  border-radius: 8px;
-  border-left: 3px solid #D9A62B;
-  background: #FFF6E3;
-  color: #6F5110;
-  font-size: 13.5px;
-  line-height: 1.55;
-  box-shadow: var(--card-shadow-soft);
-}
-.result-callout svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-@media (max-width: 600px) {
-  .prob-row {
-    grid-template-columns: 90px 1fr 50px;
-    gap: 10px;
-  }
-  .gradcam-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-/* Featured (retinopathy) dashboard card is now clickable: give its button
-   contrast against the navy-to-teal gradient instead of the teal default. */
-.dash-card-featured .dash-card-btn {
-  background: #fff;
-  color: var(--navy);
-}
-a.dash-card-featured:hover .dash-card-btn {
-  background: #E9F5F3;
-}
 
 /* ---------- "Ask AI about this result" button (result pages) ---------- */
 .btn-ask-ai {

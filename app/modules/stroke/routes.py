@@ -1,3 +1,29 @@
+"""
+Stroke Risk module routes.
+
+  GET  /predict/stroke   - renders the input form
+  POST /predict/stroke   - validates form input, runs the model, saves a
+                            Prediction row, renders the shared result page
+
+Same pattern as heart/diabetes/kidney routes.py: login required, SHAP
+explanation via the shared app/shared/shap_utils.py.
+
+NOTE on encoding: train.py builds its feature set with
+pd.get_dummies(df, columns=[...], drop_first=True), so the model expects
+one-hot dummy columns, not raw category strings. The form below collects
+plain category choices (gender, work type, etc.) and this route converts
+each one into the matching 0/1 dummy column before scaling — the dummy
+column names and the dropped reference category per field are exactly
+what train.py's pd.get_dummies() produced from this dataset:
+  - gender:         reference "Female" -> dummy gender_Male
+  - ever_married:   reference "No"     -> dummy ever_married_Yes
+  - work_type:      reference "Govt_job" -> dummies for Never_worked,
+                     Private, Self-employed, children
+  - Residence_type: reference "Rural"  -> dummy Residence_type_Urban
+  - smoking_status: reference "Unknown" -> dummies for "formerly smoked",
+                     "never smoked", "smokes"
+"""
+
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -66,7 +92,7 @@ def post_stroke_predict(
         return RedirectResponse(url="/login")
 
     # Convert plain category choices into the exact one-hot dummy
-    # columns the model was trained on
+    # columns the model was trained on (see module docstring above).
     raw_data = {
         "age": age,
         "hypertension": hypertension,
@@ -105,7 +131,6 @@ def post_stroke_predict(
         result=result_label,
         confidence=prediction_output["probability"],
         shap_summary=shap_data,
-        gradcam_image_path=None,
     )
     db.add(new_prediction)
     db.commit()

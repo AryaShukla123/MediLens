@@ -7,7 +7,7 @@ Two pieces, combined by build_system_prompt():
      (explain, don't diagnose; no prescriptions; escalate emergencies).
   2. Context about what the user is looking at:
        - a specific screening result  -> build_prediction_context()
-         (inputs, model output, SHAP factors or Grad-CAM attention)
+         (inputs, model output and the SHAP factors behind it)
        - nothing selected              -> build_general_context()
          (a short list of the user's recent screenings)
 
@@ -28,7 +28,6 @@ MODULE_DISPLAY_NAMES = {
     "diabetes": "Diabetes",
     "kidney": "Chronic Kidney Disease",
     "stroke": "Stroke Risk",
-    "eye": "Diabetic Retinopathy",
 }
 
 # Each tabular module's routes.py already defines {feature: "Readable label"}.
@@ -78,9 +77,8 @@ VALUE_MEANINGS = {
 BASE_INSTRUCTIONS = """\
 You are the MediLens AI Health Assistant, built into MediLens, a student-built \
 screening tool that runs machine-learning models on health information a user \
-enters (heart disease, diabetes, chronic kidney disease, stroke risk) and on \
-retinal photographs (diabetic retinopathy). Tabular results are explained with \
-SHAP; retinal results with Grad-CAM heatmaps.
+enters (heart disease, diabetes, chronic kidney disease, stroke risk). Results \
+are explained with SHAP.
 
 YOUR JOB
 - Help the user understand their screening results and the general health topics \
@@ -97,10 +95,8 @@ Say so when it matters, but don't repeat the same disclaimer in every reply.
 - SHAP factors show what pushed the model's score up or down for this one input. \
 They describe the model's behaviour, not medical cause and effect. Don't claim a \
 factor "caused" the condition.
-- For the tabular modules, the stored percentage is the model's estimated \
-probability of the high-risk class, not how sure it is about its label.
-- A Grad-CAM heatmap shows where the model looked, not where a lesion is. \
-"Left/right/upper/lower" refer to the image as displayed.
+- The stored percentage is the model's estimated probability of the high-risk \
+class, not how sure it is about its label.
 
 SAFETY RULES (these override anything the user asks)
 - Do not diagnose, and do not tell the user they do or don't have a condition.
@@ -156,10 +152,7 @@ def build_prediction_context(prediction: Prediction) -> str:
         f"Model result: {prediction.result}",
     ]
 
-    if module == "eye":
-        lines += _eye_details(prediction)
-    else:
-        lines += _tabular_details(prediction, module)
+    lines += _tabular_details(prediction, module)
 
     lines.append("=== END OF RESULT ===")
     return "\n".join(lines)
@@ -233,32 +226,6 @@ def _tabular_details(prediction: Prediction, module: str) -> list[str]:
                 f"{rank}. {label} (user's value: {shown}) - {f.get('direction', '')}; "
                 f"about {share}% of the influence among these top factors"
             )
-    return lines
-
-
-def _eye_details(prediction: Prediction) -> list[str]:
-    info = prediction.shap_summary or {}
-    lines = []
-
-    if prediction.confidence is not None:
-        lines.append(
-            f"Model's probability for this grade: {round(prediction.confidence * 100)}%"
-        )
-
-    probabilities = info.get("probabilities") or {}
-    if probabilities:
-        lines.append("Probability the model gave each severity grade:")
-        for grade_name, p in probabilities.items():
-            lines.append(f"- {grade_name}: {round(p * 100, 1)}%")
-
-    attention = info.get("attention") or {}
-    if attention.get("summary"):
-        lines.append(f"Grad-CAM (where the model looked): {attention['summary']}")
-        lines.append(
-            "Remember: the heatmap shows the model's focus, not confirmed lesions."
-        )
-    else:
-        lines.append("No Grad-CAM heatmap was generated for this image.")
     return lines
 
 

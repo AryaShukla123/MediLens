@@ -1,3 +1,14 @@
+"""
+Diabetes module routes.
+
+  GET  /predict/diabetes   - renders the input form
+  POST /predict/diabetes   - validates form input, runs the model, saves a
+                              Prediction row, renders the shared result page
+
+Directly mirrors app/modules/heart/routes.py — same auth requirement,
+same shap_utils wiring, same shared result.html template.
+"""
+
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -87,7 +98,6 @@ def post_diabetes_predict(
         result=result_label,
         confidence=prediction_output["probability"],
         shap_summary=shap_data,
-        gradcam_image_path=None,
     )
     db.add(new_prediction)
     db.commit()

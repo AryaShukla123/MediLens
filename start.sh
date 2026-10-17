@@ -23,5 +23,5 @@ alembic upgrade head
 echo "==> Starting MediLens on port ${PORT:-8000}"
 # exec: uvicorn replaces this shell, so it receives the platform's stop signals.
 # --proxy-headers: trust X-Forwarded-* headers from the platform's load balancer.
-# One worker on purpose: each worker would load PyTorch and every model into memory.
+# One worker on purpose: each worker would load every ML model into memory.
 exec uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}" --proxy-headers --forwarded-allow-ips='*'

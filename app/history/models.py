@@ -19,10 +19,11 @@ class Prediction(Base):
     result = Column(String, nullable=False)          
     confidence = Column(Float, nullable=True)         # model's confidence score, 0-1
 
-    # Top SHAP feature contributions (tabular modules only, null for eye module)
+    # Top SHAP feature contributions behind the result
     shap_summary = Column(JSON, nullable=True)
 
-    # Path to the saved Grad-CAM heatmap image (eye module only, null otherwise)
+    # Unused since the retinal-imaging module was removed. The column is kept (always
+    # null) so no database migration is needed just to drop it.
     gradcam_image_path = Column(String, nullable=True)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

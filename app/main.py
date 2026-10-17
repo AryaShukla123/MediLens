@@ -8,12 +8,17 @@ from app.modules.heart.routes import router as heart_router
 from app.modules.diabetes.routes import router as diabetes_router
 from app.modules.kidney.routes import router as kidney_router
 from app.modules.stroke.routes import router as stroke_router
-from app.modules.retinopathy.routes import router as retinopathy_router
 from app.chatbot.routes import router as chatbot_router
 from app.history.routes import router as history_router
 from app.auth.profile_routes import router as profile_router
 from app.auth.utils import get_current_user_optional
+from app.chatbot.context_builder import MODULE_DISPLAY_NAMES
 
+# --- IMPORTANT ---
+# Every SQLAlchemy model must be imported somewhere before the app
+# starts handling requests, otherwise relationships that reference a
+# model by string name (e.g. User.chat_messages -> "ChatMessage")
+# can't be resolved and every DB query crashes with a 500 error.
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
@@ -35,7 +40,6 @@ app.include_router(heart_router)
 app.include_router(diabetes_router)
 app.include_router(kidney_router)
 app.include_router(stroke_router)
-app.include_router(retinopathy_router)
 app.include_router(chatbot_router)
 app.include_router(history_router)
 app.include_router(profile_router)
@@ -52,45 +56,38 @@ def root(request: Request, current_user=Depends(get_current_user_optional)):
 
 # --- Dashboard: module selection hub ---
 
+# The chatbot has no dashboard card: it lives in the floating assistant button
+# in base.html. "tag" is the small label at the top of each card.
 AVAILABLE_MODULES = [
     {
         "slug": "heart",
         "name": "Heart Disease",
         "description": "Cardiovascular risk from vitals and bloodwork.",
+        "tag": "Cardiovascular · ML + SHAP",
         "icon": "heart",
     },
     {
         "slug": "diabetes",
         "name": "Diabetes",
         "description": "Type 2 diabetes risk from clinical measurements.",
+        "tag": "Metabolic · ML + SHAP",
         "icon": "droplet",
     },
     {
         "slug": "kidney",
         "name": "Chronic Kidney Disease",
         "description": "Renal function risk from urinalysis and blood panel.",
+        "tag": "Renal · ML + SHAP",
         "icon": "filter",
     },
     {
         "slug": "stroke",
         "name": "Stroke Risk",
         "description": "Stroke likelihood from personal and lifestyle factors.",
+        "tag": "Neurological · ML + SHAP",
         "icon": "zap",
     },
 ]
-
-# The imaging module is shown on its own, styled differently from the
-# four tabular cards above (CNN + Grad-CAM instead of SHAP on tabular
-# data -- visually distinct on purpose, and centered below the main
-# row). The chatbot has no dashboard card at all -- it lives only in
-# the floating assistant button in base.html.
-FEATURED_MODULE = {
-    "slug": "eye",
-    "name": "Diabetic Retinopathy",
-    "description": "Retinal imaging analysis using a CNN with Grad-CAM visual explanations -- our most advanced module.",
-    "tag": "Deep Learning · CNN + Grad-CAM",
-    "icon": "eye",
-}
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -104,13 +101,15 @@ def dashboard(
 
     recent_predictions = (
         db.query(Prediction)
-        .filter(Prediction.user_id == current_user.id)
+        .filter(Prediction.user_id == current_user.id, Prediction.module.in_(list(MODULE_DISPLAY_NAMES)))
         .order_by(desc(Prediction.created_at))
         .limit(5)
         .all()
     )
     total_predictions = (
-        db.query(Prediction).filter(Prediction.user_id == current_user.id).count()
+        db.query(Prediction)
+        .filter(Prediction.user_id == current_user.id, Prediction.module.in_(list(MODULE_DISPLAY_NAMES)))
+        .count()
     )
 
     return templates.TemplateResponse(
@@ -120,7 +119,6 @@ def dashboard(
             "current_user": current_user,
             "page_class": "dashboard-theme",
             "modules": AVAILABLE_MODULES,
-            "featured_module": FEATURED_MODULE,
             "recent_predictions": recent_predictions,
             "total_predictions": total_predictions,
         },

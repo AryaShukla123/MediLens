@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from pydantic import ValidationError
 
+from app.config import settings
 from app.database import get_db
 from app.auth.models import User
 from app.auth.schemas import UserCreate
@@ -26,7 +27,7 @@ def register_form(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="users/register.html",
-        context={"error": None}
+        context={"error": None, "hide_chrome": True}
     )
 
 
@@ -45,7 +46,7 @@ def register_submit(
         return templates.TemplateResponse(
             request=request,
             name="users/register.html",
-            context={"error": e.errors()[0]["msg"]},
+            context={"error": e.errors()[0]["msg"], "hide_chrome": True},
             status_code=400,
         )
 
@@ -54,7 +55,7 @@ def register_submit(
         return templates.TemplateResponse(
             request=request,
             name="users/register.html",
-            context={"error": "An account with that email already exists."},
+            context={"error": "An account with that email already exists.", "hide_chrome": True},
             status_code=400,
         )
 
@@ -76,7 +77,7 @@ def login_form(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="users/login.html", 
-        context={"error": None}
+        context={"error": None, "hide_chrome": True}
     )
 
 
@@ -93,7 +94,7 @@ def login_submit(
         return templates.TemplateResponse(
             request=request,
             name="users/login.html",
-            context={"error": "Incorrect email or password."},
+            context={"error": "Incorrect email or password.", "hide_chrome": True},
             status_code=401,
         )
 
@@ -106,7 +107,9 @@ def login_submit(
         value=token,
         httponly=True,       # JS can't read this cookie — reduces XSS risk
         samesite="lax",
-       
+        # Only send the cookie over HTTPS when deployed (ENVIRONMENT=production);
+        # on http://localhost during development a "secure" cookie would never be sent.
+        secure=settings.environment.lower() == "production",
     )
     return response
 
