@@ -314,4 +314,4 @@ Phase 1 (Authentication, Database & Shared Infrastructure) and Phase 2 (all four
 ### 👤 Author Information
 
 - **Lead Architect**: Arya Shukla
-- **Academic Specialization**: Computer Science (Artificial Intelligence & Machine Learning)<img width="1366" height="768" alt="Screenshot (328)" src="https://github.com/user-attachments/assets/fe3efcfa-7fec-4dc5-b37e-610a936b9b34" />
+- **Academic Specialization**: Computer Science (Artificial Intelligence & Machine Learning)
