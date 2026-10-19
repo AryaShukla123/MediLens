@@ -14,11 +14,6 @@ from app.auth.profile_routes import router as profile_router
 from app.auth.utils import get_current_user_optional
 from app.chatbot.context_builder import MODULE_DISPLAY_NAMES
 
-# --- IMPORTANT ---
-# Every SQLAlchemy model must be imported somewhere before the app
-# starts handling requests, otherwise relationships that reference a
-# model by string name (e.g. User.chat_messages -> "ChatMessage")
-# can't be resolved and every DB query crashes with a 500 error.
 from app.auth.models import User
 from app.history.models import Prediction
 from app.chatbot.models import ChatMessage
